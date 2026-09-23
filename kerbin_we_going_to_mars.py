@@ -20,6 +20,8 @@ Apollo_Negative_11 = conn.space_center.active_vessel
 
 
 
+def launch():
+    print("empty")
 
 
 
@@ -27,19 +29,29 @@ Apollo_Negative_11 = conn.space_center.active_vessel
 
 
 
+def orbit_kerbin():
+    print("empty")
 
 
 
 
 
+def transfer_to_mars():
+    print("empty")
 
 
 
 
 
+def arrive_at_mars():
+    print("empty")
 
 
 
+
+
+def land_on_mars():
+    print("empty")
 
 
 
