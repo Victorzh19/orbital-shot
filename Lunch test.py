@@ -16,6 +16,41 @@ conn = krpc.connect(
 Apollo_Negative_11 = conn.space_center.active_vessel
 
 #================================= Main ===============================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#================================= test ===============================================
+
 print("Okkkkkk lets go")
 Apollo_Negative_11.control.throttle = 1.0
 Apollo_Negative_11.control.activate_next_stage()
@@ -51,6 +86,3 @@ print("I think its working")
 
 
 
-
-
-#================================= test ===============================================
