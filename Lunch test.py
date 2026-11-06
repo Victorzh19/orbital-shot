@@ -9,8 +9,8 @@ import math
 
 #========================= connection sequence ======================
 conn = krpc.connect(
-    name="Launch test",
-    address="100.85.76.35",
+    name="kkk",
+    address="100.122.209.90",
 )
 apollo_negative_11 = conn.space_center.active_vessel
 #================================= test ===============================================

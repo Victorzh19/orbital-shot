@@ -10,10 +10,13 @@ import threading
 
 #========================= connection sequence ======================
 conn = krpc.connect(
-    name="Launch test",
+    name="Orbital-shot",
     address="100.85.76.35",
+    rpc_port= 50000,
+    stream_port= 50001
 )
 apollo_negative_11 = conn.space_center.active_vessel
+
 
 #================================= Main ===============================================
 #Target heading prevents over correction and wiggle
@@ -66,38 +69,250 @@ fuel = apollo_negative_11.resources.amount('LiquidFuel')
 body = apollo_negative_11.orbit.body
 
 #First stages
-def launch(target_apoapsis, stage_altitude):
-    apollo_negative_11.control.throttle = 1.0
+def launch(target_apoapsis):
     apollo_negative_11.control.activate_next_stage()
+    print("Yahoo")
     time.sleep(0.5)
+    apollo_negative_11.control.throttle = 0.7
+    
     apollo_negative_11.control.activate_next_stage()
-    stage = False
+    print("Fuck")
+    
+    
+    auto_pilot = apollo_negative_11.auto_pilot
+    auto_pilot.engaged = True
+    auto_pilot.target_pitch = 90
+    auto_pilot.target_heading = target_heading(0)
+    
+    stop_ts = False
+    stop_ts1500 = False
+    stop_ts13000 = False
+    stop_ts15000 = False
+    stop_ts17000 = False
+    stop_ts20000 = False
+    stop_ts20500 = False
+    stop_ts21000 = False
+    stop_ts21500 = False
+    stop_ts22000 = False
+    stop_ts22500 = False
+    stop_ts23000 = False
+    stop_ts23500 = False
+    stop_ts24000 = False
+    stop_ts24500 = False
+    stop_ts25000 = False
+    stop_ts25500 = False
+    stop_ts26000 = False
 
+    kickbacks = [p for p in apollo_negative_11.parts.all
+             if "Kickback" in p.title and p.decouple_stage == 13]
+    first_stage_tanks = [p for p in apollo_negative_11.parts.all if "Kerbodyne S3-14400" in p.title and p.decouple_stage == 12]
+    
+    dropped_kickbacks = False
+    dropped_tank = False
+    
+
+
+    
+    print("current stage:", apollo_negative_11.control.current_stage)
+    
+    #solid = apollo_negative_11.stage_at(15).resources(False).amount("SolidFuel")
     while True:
-        current_altitude = apollo_negative_11.flight(body.reference_frame).mean_altitude
-        current_apoapsis = orbit.apoapsis_altitude
-        
-        
-        print(f" Altitude: {current_altitude:.2f} m, Apoapsis: {current_apoapsis:.2f} m")
+        altitude = apollo_negative_11.flight().mean_altitude
+        speed = apollo_negative_11.flight(body.reference_frame).speed
+        fuel = apollo_negative_11.resources.amount('LiquidFuel')
+        apoapsis = orbit.apoapsis_altitude
 
         
-        if not stage and current_altitude >= stage_altitude and current_apoapsis >= target_apoapsis:
+        
+        #print(f"solid fuel is: {solid}")
+        #for i, t in enumerate(tank):
+            #print(i, "decouple stage:", t.decouple_stage, "fuel:", t.resources.amount("LiquidFuel"))
+        
+        print(f"Altitude: {altitude:.2f} m")
+        print(f"Speed: {speed:.2f} m/s")
+        print(f"Liquid Fuel: {fuel:.2f}")
+        print(f"Apoapsis {apoapsis:.2f}m")
+
+       
+
+           # shows exactly which resources this part holds
+
+# inside the loop:
+        
+
+        if altitude >= 1000 and not stop_ts and speed == 100:
+            auto_pilot.target_pitch = 90
+            auto_pilot.target_heading = target_heading(90)
+            auto_pilot.wait
+            print("it work yupii")
             
-            stage = True
-            print("Stage activated!")
+            stop_ts = True
+        
+
+        if altitude  >= 8000 and not stop_ts1500:
+            auto_pilot.target_pitch = 80
+            auto_pilot.target_heading = target_heading(90)
+            auto_pilot.wait()
+            print("yupieee2")
+            
+            stop_ts1500 = True
+
+        if altitude >= 13000 and not stop_ts13000:
+            auto_pilot.target_pitch = 77
+            auto_pilot.target_heading = target_heading(90)
+            auto_pilot.wait()
+            print("yupieee2")
+                        
+            stop_ts13000 = True
+
+        if altitude >= 15000 and not stop_ts15000:
+            auto_pilot.target_pitch = 75
+            auto_pilot.target_heading = target_heading(90)
+            auto_pilot.wait()
+            print("yupieee2")
+                                
+            stop_ts15000 = True
+        if altitude >= 17000 and not stop_ts17000:
+            auto_pilot.target_pitch = 70
+            auto_pilot.target_heading = target_heading(90)
+            auto_pilot.wait()
+            print("yupieee2")
+                                    
+            stop_ts17000 = True
+
+        if altitude >= 20000 and not stop_ts20000:
+            auto_pilot.target_pitch = 60
+            auto_pilot.target_heading = target_heading(90)
+            auto_pilot.wait()
+            print("yupieee2")
+                                
+            stop_ts20000 = True
+
+        if altitude >= 20500 and not stop_ts20500:
+            auto_pilot.target_pitch = 55
+            auto_pilot.target_heading = target_heading(90)
+            auto_pilot.wait()
+            print("yupieee2")
+                                
+            stop_ts20500 = True
+
+        if altitude >= 21000 and not stop_ts21000:
+            auto_pilot.target_pitch = 50
+            auto_pilot.target_heading = target_heading(90)
+            auto_pilot.wait()
+            print("yupieee2")
+                                
+            stop_ts21000 = True
+
+        if altitude >= 21500 and not stop_ts21500:
+            auto_pilot.target_pitch = 45
+            auto_pilot.target_heading = target_heading(90)
+            auto_pilot.wait()
+            print("yupieee2")
+                                
+            stop_ts21500 = True
+
+        if altitude >= 22000 and not stop_ts22000:
+            auto_pilot.target_pitch = 40
+            auto_pilot.target_heading = target_heading(90)
+            auto_pilot.wait()
+            print("yupieee2")
+                                
+            stop_ts22000 = True
+
+        if altitude >= 22500 and not stop_ts22500:
+            auto_pilot.target_pitch = 35
+            auto_pilot.target_heading = target_heading(90)
+            auto_pilot.wait()
+            print("yupieee2")
+                                
+            stop_ts22500 = True
+
+        if altitude >= 23000 and not stop_ts23000:
+            auto_pilot.target_pitch = 30
+            auto_pilot.target_heading = target_heading(90)
+            auto_pilot.wait()
+            print("yupieee2")
+                                
+            stop_ts23000 = True
+
+        if altitude >= 23500 and not stop_ts23500:
+            auto_pilot.target_pitch = 25
+            auto_pilot.target_heading = target_heading(90)
+            auto_pilot.wait()
+            print("yupieee2")
+                                
+            stop_ts23500 = True
+
+        if altitude >= 24000 and not stop_ts24000:
+            auto_pilot.target_pitch = 20
+            auto_pilot.target_heading = target_heading(90)
+            auto_pilot.wait()
+            print("yupieee2")
+                                
+            stop_ts24000 = True
+
+        if altitude >= 24500 and not stop_ts24500:
+            auto_pilot.target_pitch = 15
+            auto_pilot.target_heading = target_heading(90)
+            auto_pilot.wait()
+            print("yupieee2")
+                                
+            stop_ts24500 = True
+
+        if altitude >= 25000 and not stop_ts25000:
+            auto_pilot.target_pitch = 10
+            auto_pilot.target_heading = target_heading(90)
+            auto_pilot.wait()
+            print("yupieee2")
+                                
+            stop_ts25000 = True
+
+        if altitude >= 25500 and not stop_ts25500:
+            auto_pilot.target_pitch = 5
+            auto_pilot.target_heading = target_heading(90)
+            auto_pilot.wait()
+            print("yupieee2")
+                                
+            stop_ts25500 = True
+
+        if altitude >= 26000 and not stop_ts26000:
+            auto_pilot.target_pitch = 0
+            auto_pilot.target_heading = target_heading(90)
+            auto_pilot.wait()
+            print("yupieee2")
+                                
+            stop_ts26000 = True
+
+
+        if not dropped_kickbacks:
+            kickbacks_fuel = sum(p.resources.amount("SolidFuel") for p in kickbacks)
+            if kickbacks_fuel < 0.5:
+                apollo_negative_11.control.activate_next_stage()
+                print("Quiero sexo")
+                dropped_kickbacks = True
+
+        elif not dropped_tank:
+            tank_fuel = sum(t.resources.amount("LiquidFuel") for t in first_stage_tanks)
+            if tank_fuel < 0.5:
+                apollo_negative_11.control.activate_next_stage()
+                time.sleep(0.5)
+                apollo_negative_11.control.throttle = 1.0
+                apollo_negative_11.control.activate_next_stage()
+                dropped_tank = True
+        #elif not dropped_second_tank:
+            #second_tank_fuel = sum(t.resources.amount("LiquidFuel") for t in second_stage_tank)
+            #if second_tank_fuel < 0.5:
+                #apollo_negative_11.control.activate_next_stage()
+                #dropped_second_tank = True
+
+        
+
+        if  apoapsis >= target_apoapsis:
+            apollo_negative_11.control.throttle = 0.0
+            print('One small step for kerbin one big step for humanity')
             break
-        time.sleep(0.5)
-
-    apollo_negative_11.control.throttle = 0
-
-
         
-        
-
-
-
-
-
 
 
 
@@ -243,7 +458,7 @@ sc = conn.space_center
 
 
 
-#Gui
+#================================================= Gui =================================================================================
 window = Tk()
 window.title("Kerbin to Mars")
 
@@ -266,8 +481,19 @@ def speed_button_clicked():
     
 def start_launch():
     activate_launch_function.config(state="disabled")
-    thread = threading.Thread(target=launch, args=(100000, 1000))
+    thread = threading.Thread(target=launch, args=(100000,))
     thread.start()
+
+def reset_launch():
+    conn.space_center.revert_to_launch()
+
+def camera_set_up():
+    camera = conn.space_center.camera
+
+    camera.mode = conn.space_center.CameraMode.free
+    camera.pitch = 20
+    camera.heading = 45
+    camera.distance = 120 
 
 fuel_button = Button(window, text="Check Fuel", command=fuel_button_clicked)
 fuel_button.grid(row=1, column=10, pady=5)
@@ -284,10 +510,21 @@ speed_label.grid(row=2, column=11, pady=5)
 activate_launch_function = Button(window, text="Launch", command=start_launch)
 activate_launch_function.grid(row=3, column=10, pady=5)
 
+reset_launch_button = Button(window, text="Reset Launch", command=reset_launch)
+reset_launch_button.grid(row=3, column=11, pady=5)
+
+camera_button = Button(window, text=" My good looking side", command=camera_set_up)
+camera_button.grid(row=1, column= 13, pady= 5 )
+
 center_window(window, 400, 300)
 window.after(0, lambda: activate_launch_function.config(state="normal"))
 
 
+print(apollo_negative_11.name)
+
+stage_13 = apollo_negative_11.decouple_stage_at(13)
+kickbacks = [p for p in stage_13.parts if "Kickback" in p.title]
+print(len(kickbacks))
 
 window.mainloop()
 
